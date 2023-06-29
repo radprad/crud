@@ -9,7 +9,7 @@
 		// Define database connection variables
 		$servername = "gl-mysql-server.mysql.database.azure.com";
 		$username = "glsqladmin";
-		$password = "**Gladministrator";
+		$password = "Gladmin123";
 		$dbname = "mydatabase";
 
 		// Create database connection
