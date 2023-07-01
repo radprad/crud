@@ -56,5 +56,5 @@ jobs:
         with:
           app-name: 'LiftShift-Application'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F0A4B1C50B7947059AC8901109F7C572 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_52B787744A1B485D9CA9477B436750A9 }}
           package: .
