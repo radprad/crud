@@ -20,44 +20,37 @@
 			die("Connection failed: " . $conn->connect_error);
 		}
 
-		// Check if an employee name is provided in the URL
-		if (isset($_GET['name'])) {
-			$employeeName = $_GET['name'];
+		// Get the employee name from the URL parameter
+		$employeeName = basename($_SERVER['REQUEST_URI']);
 
-			// Prepare and execute the query with a WHERE clause
-			$sql = "SELECT * FROM employees WHERE first_name = '$employeeName'";
-			$result = $conn->query($sql);
+		// Remove any leading or trailing slashes
+		$employeeName = trim($employeeName, '/');
 
-			if ($result->num_rows > 0) {
-				// Display table headers
-				echo "<table><tr><th>ID</th><th>Name</th><th>Email</th></tr>";
-				// Loop through results and display each row in the table
-				while($row = $result->fetch_assoc()) {
-					echo "<tr><td>" . $row["id"] . "</td><td>" . $row["name"] . "</td><td>" . $row["email"] . "</td></tr>";
-				}
-				echo "</table>";
-			} else {
-				echo "No results found for employee: " . $employeeName;
+		// Prepare the SQL statement with a parameter
+		$sql = "SELECT * FROM employees WHERE first_name = ?";
+		$stmt = $conn->prepare($sql);
+		$stmt->bind_param("s", $employeeName);
+
+		// Execute the prepared statement
+		$stmt->execute();
+
+		// Get the result set
+		$result = $stmt->get_result();
+
+		if ($result->num_rows > 0) {
+			// Display table headers
+			echo "<table><tr><th>ID</th><th>Name</th><th>Email</th></tr>";
+			// Loop through results and display each row in the table
+			while($row = $result->fetch_assoc()) {
+				echo "<tr><td>" . $row["emp_no"] . "</td><td>" . $row["first_name"] . "</td><td>" . $row["email_id"] . "</td></tr>";
 			}
+			echo "</table>";
 		} else {
-			// Query database for all rows in the table
-			$sql = "SELECT * FROM employees";
-			$result = $conn->query($sql);
-
-			if ($result->num_rows > 0) {
-				// Display table headers
-				echo "<table><tr><th>ID</th><th>Name</th><th>Email</th></tr>";
-				// Loop through results and display each row in the table
-				while($row = $result->fetch_assoc()) {
-					echo "<tr><td>" . $row["id"] . "</td><td>" . $row["name"] . "</td><td>" . $row["email"] . "</td></tr>";
-				}
-				echo "</table>";
-			} else {
-				echo "0 results";
-			}
+			echo "0 results";
 		}
 
-		// Close database connection
+		// Close statement and database connection
+		$stmt->close();
 		$conn->close();
 	?>
 </body>
