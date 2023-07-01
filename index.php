@@ -8,6 +8,7 @@
 	<?php
 		// Define database connection variables
 		$servername = "gl-mysql-server.mysql.database.azure.com";
+
 		$username = "glsqladmin";
 		$password = "Gladmin123";
 		$dbname = "mydatabase";
@@ -21,7 +22,7 @@
 		}
 
 		// Query database for all rows in the table
-		$sql = "SELECT * FROM mytable";
+		$sql = "SELECT * FROM employees";
 		$result = $conn->query($sql);
 
 		if ($result->num_rows > 0) {
