@@ -25,7 +25,7 @@
 			$employeeName = $_GET['name'];
 
 			// Prepare and execute the query with a WHERE clause
-			$sql = "SELECT * FROM employees WHERE name = '$employeeName'";
+			$sql = "SELECT * FROM employees WHERE first_name = '$employeeName'";
 			$result = $conn->query($sql);
 
 			if ($result->num_rows > 0) {
