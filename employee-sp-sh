@@ -1,0 +1,19 @@
+#script to be run as part of employee-sp virtual machine scale set for installing apache and also to install the php file on all the instances
+#!/bin/bash
+# Update packages and install required software
+apt-get update
+apt-get install -y apache2 php mysql-client
+# Change to the /opt directory
+cd /opt
+# Download the PHP application code
+git clone https://github.com/radprad/crud.git
+cd /opt/crud
+# Copy the updated index.php file to the Apache document root
+cp index.php /var/www/html
+cd /var/www/html
+sudo apt-get install php-mysqli
+sudo sed -i '/;extension=mysqli/s/^;//' /etc/php/7.4/apache2/php.ini
+# Update Apache configuration
+sed -i 's/DirectoryIndex  index.html/DirectoryIndex  index.php  index.html/' /etc/apache2/mods-enabled/dir.conf
+# Restart Apache
+systemctl restart apache2
